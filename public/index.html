@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>脳内ポエム・デトックス</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Shippori+Mincho:wght@400;500;700&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --washi:       #F6F1E7;
+      --washi-mid:   #EDE4D0;
+      --washi-dark:  #D9CEB8;
+      --ink:         #1B1208;
+      --ink-mid:     #2C1F0E;
+      --ink-light:   #4A3820;
+      --vermillion:  #9B2335;
+      --verm-lt:     #BF3A4E;
+      --text:        #2C1F0E;
+      --muted:       #8A7B69;
+      --border:      rgba(44,31,14,0.14);
+      --border-lt:   rgba(44,31,14,0.07);
+    }
+
+    body {
+      background-color: var(--washi);
+      background-image:
+        radial-gradient(ellipse at 18% 12%, rgba(192,148,92,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 82% 88%, rgba(155,35,53,0.05) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.4)  0%, transparent 75%);
+      color: var(--text);
+      font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5rem 1.5rem 7rem;
+    }
+
+    /* 和紙の繊維感 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(92deg, transparent 0px, rgba(180,160,120,0.012) 1px, transparent 2px),
+        repeating-linear-gradient(2deg,  transparent 0px, rgba(180,160,120,0.012) 1px, transparent 2px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 760px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── 散り桜 (背景装飾) ─── */
+    .sakura-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .petal {
+      position: absolute;
+      color: var(--vermillion);
+      opacity: 0.055;
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* ─── ヘッダー ─── */
+    .header {
+      text-align: center;
+      padding-bottom: 5rem;
+    }
+
+    .seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid var(--vermillion);
+      color: var(--vermillion);
+      font-family: 'Yuji Syuku', serif;
+      font-size: 1rem;
+      opacity: 0.65;
+      margin-bottom: 1.75rem;
+    }
+
+    .title {
+      font-family: 'Yuji Syuku', serif;
+      font-size: clamp(2.1rem, 6.5vw, 3.6rem);
+      color: var(--ink);
+      letter-spacing: 0.22em;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.22em;
+      margin-top: 0.9rem;
+      font-weight: 400;
+    }
+
+    /* 桜の飾り線 */
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-top: 2.25rem;
+    }
+
+    .ornament-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--washi-dark));
+    }
+
+    .ornament-line:last-child {
+      background: linear-gradient(90deg, var(--washi-dark), transparent);
+    }
+
+    .ornament-mark {
+      color: var(--vermillion);
+      font-size: 0.85rem;
+      opacity: 0.5;
+    }
+
+    /* ─── 入力エリア ─── */
+    .input-section {
+      margin-bottom: 3.5rem;
+    }
+
+    .input-label {
+      display: block;
+      font-family: 'Yuji Syuku', serif;
+      font-size: 0.85rem;
+      color: var(--vermillion);
+      letter-spacing: 0.3em;
+      margin-bottom: 1.5rem;
+      opacity: 0.85;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 115px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+      font-size: 1.05rem;
+      line-height: 2.1;
+      padding: 0.25rem 0 0.75rem;
+      resize: none;
+      outline: none;
+      transition: border-color 0.35s;
+      letter-spacing: 0.05em;
+    }
+
+    textarea:focus {
+      border-bottom-color: rgba(155,35,53,0.55);
+    }
+
+    textarea::placeholder {
+      color: rgba(44,31,14,0.22);
+    }
+
+    .input-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .char-count {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      opacity: 0.7;
+    }
+
+    /* 送信ボタン */
+    button {
+      font-family: 'Yuji Syuku', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.35em;
+      color: var(--vermillion);
+      background: transparent;
+      border: 1px solid rgba(155,35,53,0.45);
+      padding: 0.7rem 2rem;
+      cursor: pointer;
+      transition: background 0.22s, color 0.22s, border-color 0.22s, transform 0.15s;
+    }
+
+    button:hover {
+      background: var(--vermillion);
+      color: var(--washi);
+      border-color: var(--vermillion);
+      transform: translateY(-1px);
+    }
+
+    button:active { transform: translateY(0); }
+
+    button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ─── ローディング ─── */
+    .loading {
+      text-align: center;
+      padding: 4rem 2rem;
+      display: none;
+    }
+
+    .enso {
+      width: 44px;
+      height: 44px;
+      border: 1.5px solid var(--washi-dark);
+      border-top-color: var(--vermillion);
+      border-radius: 50%;
+      margin: 0 auto 1.25rem;
+      animation: turn 1.4s linear infinite;
+    }
+
+    @keyframes turn { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-family: 'Yuji Syuku', serif;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.3em;
+    }
+
+    /* ─── エラー ─── */
+    .error {
+      border-left: 2px solid var(--vermillion);
+      padding: 0.75rem 1.25rem;
+      color: var(--vermillion);
+      font-size: 0.84rem;
+      letter-spacing: 0.05em;
+      background: rgba(155,35,53,0.04);
+      display: none;
+      margin-bottom: 2.5rem;
+    }
+    .error.show { display: block; }
+
+    /* ─── 結果エリア ─── */
+    .result { display: none; }
+    .result.show { display: block; }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .result-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.4em;
+    }
+
+    .result-title {
+      font-family: 'Yuji Syuku', serif;
+      color: var(--ink);
+      font-size: 1.1rem;
+      letter-spacing: 0.35em;
+      margin-top: 0.5rem;
+    }
+
+    .result-stem {
+      width: 1px;
+      height: 2.5rem;
+      background: linear-gradient(to bottom, var(--washi-dark), transparent);
+      margin: 1.25rem auto 0;
+    }
+
+    /* 三幅対 — 俳句トリプティック */
+    .triptych {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border-lt);
+    }
+
+    .haiku-panel {
+      padding: 3.5rem 1.25rem 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+      position: relative;
+      opacity: 0;
+      animation: emerge 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .haiku-panel:nth-child(2) { animation-delay: 0.18s; }
+    .haiku-panel:nth-child(3) { animation-delay: 0.36s; }
+
+    /* 縦の仕切り線 */
+    .haiku-panel:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      right: 0;
+      width: 1px;
+      height: 60%;
+      background: linear-gradient(to bottom, transparent, var(--border-lt), transparent);
+    }
+
+    /* パネル内の桜透かし */
+    .haiku-panel::before {
+      content: '❀';
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.75rem;
+      color: var(--vermillion);
+      opacity: 0.1;
+      line-height: 1;
+    }
+
+    @keyframes emerge {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .haiku-num {
+      font-family: 'Yuji Syuku', serif;
+      font-size: 0.62rem;
+      color: var(--vermillion);
+      letter-spacing: 0.35em;
+      opacity: 0.65;
+      margin-bottom: 1.75rem;
+    }
+
+    .haiku-text {
+      font-family: 'Yuji Syuku', serif;
+      font-size: 1.25rem;
+      color: var(--ink);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      letter-spacing: 0.38em;
+      line-height: 2.6;
+      text-align: center;
+    }
+
+    /* ─── フッター ─── */
+    .footer {
+      margin-top: 6rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      opacity: 0.7;
+    }
+
+    /* ─── レスポンシブ ─── */
+    @media (max-width: 600px) {
+      body { padding: 3rem 1.25rem 5rem; }
+
+      .header { padding-bottom: 3.5rem; }
+
+      .triptych {
+        grid-template-columns: 1fr;
+      }
+
+      .haiku-panel {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1.5rem;
+        min-height: auto;
+        padding: 2rem 1.5rem;
+      }
+
+      .haiku-panel:not(:last-child)::after {
+        top: auto;
+        bottom: 0;
+        right: 12%;
+        width: 76%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, var(--border-lt), transparent);
+      }
+
+      .haiku-panel::before { display: none; }
+
+      .haiku-num { margin-bottom: 0; flex-shrink: 0; }
+
+      .haiku-text {
+        writing-mode: horizontal-tb;
+        letter-spacing: 0.1em;
+        font-size: 1.1rem;
+        line-height: 2;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .title { letter-spacing: 0.12em; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sakura-bg" aria-hidden="true">
+  <span class="petal" style="top:6%;left:4%;font-size:2.2rem;transform:rotate(-18deg)">❀</span>
+  <span class="petal" style="top:18%;right:6%;font-size:1rem;transform:rotate(22deg)">❀</span>
+  <span class="petal" style="top:42%;left:2%;font-size:1.6rem;transform:rotate(38deg)">❀</span>
+  <span class="petal" style="top:65%;right:3%;font-size:2.4rem;transform:rotate(-8deg);opacity:0.035">❀</span>
+  <span class="petal" style="top:78%;left:7%;font-size:1.1rem;transform:rotate(15deg)">❀</span>
+  <span class="petal" style="bottom:10%;right:8%;font-size:1.8rem;transform:rotate(-25deg)">❀</span>
+</div>
+
+<div class="container">
+
+  <header class="header">
+    <div class="seal">昇</div>
+    <h1 class="title">脳内ポエム・デトックス</h1>
+    <p class="subtitle">愚痴を俳句に昇華する、心の浄化装置</p>
+    <div class="ornament">
+      <span class="ornament-line"></span>
+      <span class="ornament-mark">❀</span>
+      <span class="ornament-line"></span>
+    </div>
+  </header>
+
+  <section class="input-section">
+    <label class="input-label" for="complaint">心のうちを打ち明けてください</label>
+    <textarea
+      id="complaint"
+      placeholder="今日の出来事、心のつぶやき、誰かへの不満…"
+      maxlength="800"
+    ></textarea>
+    <div class="input-footer">
+      <span class="char-count" id="charCount">0 / 800</span>
+      <button id="submitBtn" onclick="convert()">俳句に変換する</button>
+    </div>
+  </section>
+
+  <div class="error" id="errBox"></div>
+
+  <div class="loading" id="loadBox">
+    <div class="enso"></div>
+    <p class="loading-text">詩を紡いでいます</p>
+  </div>
+
+  <section class="result" id="resultBox">
+    <div class="result-header">
+      <p class="result-label">昇華された言葉</p>
+      <p class="result-title">— 三句 —</p>
+      <div class="result-stem"></div>
+    </div>
+    <div class="triptych" id="haikuGrid"></div>
+  </section>
+
+  <footer class="footer">
+    愚痴は詩となり、魂は軽くなる
+  </footer>
+
+</div>
+
+<script>
+  const NUMS = ['一', '二', '三'];
+
+  document.getElementById('complaint').addEventListener('input', function () {
+    document.getElementById('charCount').textContent = `${this.value.length} / 800`;
+  });
+
+  async function convert() {
+    const text = document.getElementById('complaint').value.trim();
+    if (!text) { showErr('愚痴を入力してください。'); return; }
+
+    const btn     = document.getElementById('submitBtn');
+    const loadBox = document.getElementById('loadBox');
+    const errBox  = document.getElementById('errBox');
+    const result  = document.getElementById('resultBox');
+
+    btn.disabled = true;
+    loadBox.style.display = 'block';
+    errBox.classList.remove('show');
+    result.classList.remove('show');
+
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) throw new Error(`サーバーエラー (${res.status})`);
+
+      const { haiku, error } = await res.json();
+      if (error) throw new Error(error);
+
+      renderHaiku(haiku);
+    } catch (e) {
+      showErr(e.message || '変換に失敗しました。しばらくしてからお試しください。');
+    } finally {
+      btn.disabled = false;
+      loadBox.style.display = 'none';
+    }
+  }
+
+  function renderHaiku(raw) {
+    const lines = raw.split(/\n/).map(l => l.trim()).filter(Boolean).slice(0, 3);
+    const grid  = document.getElementById('haikuGrid');
+    grid.innerHTML = '';
+
+    lines.forEach((line, i) => {
+      const panel = document.createElement('div');
+      panel.className = 'haiku-panel';
+      panel.innerHTML =
+        `<span class="haiku-num">第${NUMS[i] || (i + 1)}句</span>` +
+        `<p class="haiku-text">${escHtml(line)}</p>`;
+      grid.appendChild(panel);
+    });
+
+    document.getElementById('resultBox').classList.add('show');
+    document.getElementById('resultBox')
+      .scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function showErr(msg) {
+    const el = document.getElementById('errBox');
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  document.getElementById('complaint').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); convert(); }
+  });
+</script>
+</body>
+</html>
