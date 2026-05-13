@@ -459,7 +459,7 @@
     <p class="loading-text">詩を紡いでいます</p>
   </div>
 
-  <section class="result" id="resultBox">
+  <section class="result" id="resultBox" style="display:none">
     <div class="result-header">
       <p class="result-label">昇華された言葉</p>
       <p class="result-title">— 三句 —</p>
@@ -493,7 +493,7 @@
     btn.disabled = true;
     loadBox.style.display = 'block';
     errBox.classList.remove('show');
-    result.classList.remove('show');
+    result.style.display = 'none';
 
     try {
       const res = await fetch('/api/claude', {
@@ -530,9 +530,9 @@
       grid.appendChild(panel);
     });
 
-    document.getElementById('resultBox').classList.add('show');
-    document.getElementById('resultBox')
-      .scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const resultBox = document.getElementById('resultBox');
+    resultBox.style.display = 'block';
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function showErr(msg) {
